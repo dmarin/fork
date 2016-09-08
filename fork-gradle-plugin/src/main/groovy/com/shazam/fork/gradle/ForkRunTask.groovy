@@ -75,7 +75,7 @@ class ForkRunTask extends DefaultTask implements VerificationTask {
 
     boolean autoGrantPermissions;
 
-    boolean restartAdbIfNoDevices;
+    boolean restartAdbIfNoDevices
 
     @TaskAction
     void runFork() {
