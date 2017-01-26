@@ -11,6 +11,7 @@ package com.shazam.fork.runner;
 
 import com.android.ddmlib.*;
 import com.android.ddmlib.testrunner.*;
+import com.google.common.base.Strings;
 import com.shazam.fork.model.TestCaseEvent;
 import com.shazam.fork.system.io.RemoteFileManager;
 
@@ -57,6 +58,10 @@ class TestRun {
             runner.setCoverage(true);
             runner.addInstrumentationArg("coverageFile", RemoteFileManager.getCoverageFileName(new TestIdentifier(testClassName, testMethodName)));
         }
+		String excludedAnnotation = testRunParameters.getExcludedAnnotation();
+		if (!Strings.isNullOrEmpty(excludedAnnotation)) {
+			runner.addInstrumentationArg("notAnnotation", excludedAnnotation);
+		}
 
 		try {
 			runner.run(testRunListeners);

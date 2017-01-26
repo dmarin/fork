@@ -55,6 +55,7 @@ public class Configuration {
     private final PoolingStrategy poolingStrategy;
     private final boolean autoGrantPermissions;
     private final boolean restartAdbIfNoDevices;
+    private final String excludedAnnotation;
 
     private Configuration(Builder builder) {
         androidSdk = builder.androidSdk;
@@ -78,6 +79,7 @@ public class Configuration {
         poolingStrategy = builder.poolingStrategy;
         autoGrantPermissions = builder.autoGrantPermissions;
         restartAdbIfNoDevices = builder.restartAdbIfNoDevices;
+        this.excludedAnnotation = builder.excludedAnnotation;
     }
 
     @Nonnull
@@ -177,6 +179,10 @@ public class Configuration {
         return restartAdbIfNoDevices;
     }
 
+    public String getExcludedAnnotation() {
+        return excludedAnnotation;
+    }
+
     public static class Builder {
         private File androidSdk;
         private File applicationApk;
@@ -199,6 +205,7 @@ public class Configuration {
         private PoolingStrategy poolingStrategy;
         private boolean autoGrantPermissions;
         private boolean restartAdbIfNoDevices;
+        private String excludedAnnotation;
 
         public static Builder configuration() {
             return new Builder();
@@ -291,6 +298,11 @@ public class Configuration {
 
         public Builder withRestartAdbIfNoDevices(boolean restartAdbIfNoDevices) {
             this.restartAdbIfNoDevices = restartAdbIfNoDevices;
+            return this;
+        }
+
+        public Builder withExcludedAnnotation(String excludedAnnotation) {
+            this.excludedAnnotation = excludedAnnotation;
             return this;
         }
 
