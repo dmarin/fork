@@ -60,7 +60,10 @@ class TestRun {
         }
 		String excludedAnnotation = testRunParameters.getExcludedAnnotation();
 		if (!Strings.isNullOrEmpty(excludedAnnotation)) {
+			logger.info("Tests annotated with {} will be excluded", excludedAnnotation);
 			runner.addInstrumentationArg("notAnnotation", excludedAnnotation);
+		} else {
+			logger.info("No excluding any test based on annotations");
 		}
 
 		try {

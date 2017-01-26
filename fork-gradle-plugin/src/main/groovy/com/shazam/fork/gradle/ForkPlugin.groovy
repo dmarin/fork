@@ -94,7 +94,7 @@ class ForkPlugin implements Plugin<Project> {
             autoGrantPermissions = config.autoGrantPermissions
             ignoreFailures = config.ignoreFailures
             restartAdbIfNoDevices = config.restartAdbIfNoDevices
-
+            excludedAnnotation = config.excludedAnnotation
             dependsOn firstTestedVariantOutput.assemble, variant.assemble
         }
         forkTask.outputs.upToDateWhen { false }
