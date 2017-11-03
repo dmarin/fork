@@ -84,7 +84,7 @@ class ForkPlugin implements Plugin<Project> {
                 ignoreFailures = config.ignoreFailures
                 excludedAnnotation = config.excludedAnnotation
 
-                applicationApk = new File(baseVariantOutput.packageApplication.outputDirectory.path + "/" + baseVariantOutput.outputFileName)
+                applicationApk = baseVariantOutput.outputFile.path.endsWith('aar') ? instrumentationApk : baseVariantOutput.outputFile
 
                 String baseOutputDir = config.baseOutputDir
                 File outputBase
