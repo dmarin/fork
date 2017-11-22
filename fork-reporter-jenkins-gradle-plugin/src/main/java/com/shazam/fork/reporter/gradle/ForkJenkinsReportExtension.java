@@ -10,6 +10,10 @@
 
 package com.shazam.fork.reporter.gradle;
 
+import org.gradle.api.tasks.OutputDirectory;
+
+import java.io.File;
+
 import groovy.lang.Closure;
 
 public class ForkJenkinsReportExtension {
@@ -19,8 +23,13 @@ public class ForkJenkinsReportExtension {
     public String jenkinsUsername;
     public String jenkinsPassword;
     public String jenkinsReportTitle;
+    public boolean multimodule;
     public FreestyleJob freestyleJob;
     public FolderJob folderJob;
+
+    /** Output directory. */
+    @OutputDirectory
+    File output;
 
     public void freestyleJob(Closure<?> freestyleJobClosure) {
         freestyleJob = new FreestyleJob();

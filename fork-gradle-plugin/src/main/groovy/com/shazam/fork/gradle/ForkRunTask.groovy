@@ -49,6 +49,9 @@ class ForkRunTask extends DefaultTask implements VerificationTask {
     @OutputDirectory
     File output
 
+    @OutputDirectory
+    File outputForkReport
+
     String title
 
     String subtitle
@@ -73,9 +76,11 @@ class ForkRunTask extends DefaultTask implements VerificationTask {
 
     PoolingStrategy poolingStrategy
 
-    boolean autoGrantPermissions;
+    boolean autoGrantPermissions
 
     String excludedAnnotation
+
+    boolean shouldTerminateAdb
 
     @TaskAction
     void runFork() {
@@ -102,7 +107,9 @@ class ForkRunTask extends DefaultTask implements VerificationTask {
                 .withPoolingStrategy(poolingStrategy)
                 .withAutoGrantPermissions(autoGrantPermissions)
                 .withExcludedAnnotation(excludedAnnotation)
-                .build();
+                .withIsTerminatingAdb(shouldTerminateAdb)
+                .withOutputForkReport(outputForkReport)
+                .build()
 
         boolean success = new Fork(configuration).run()
         if (!success && !ignoreFailures) {

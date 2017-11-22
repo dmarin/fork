@@ -12,6 +12,8 @@
  */
 package com.shazam.fork;
 
+import com.shazam.fork.system.adb.Adb;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,19 +32,26 @@ public final class Fork {
 
     private final ForkRunner forkRunner;
     private final File output;
+    private final Configuration configuration;
+    private final Adb adb;
 
     public Fork(Configuration configuration) {
         this.output = configuration.getOutput();
+        this.configuration = configuration;
         setConfiguration(configuration);
         this.forkRunner = forkRunner();
+        this.adb = adb();
     }
 
     public boolean run() {
 		long startOfTestsMs = nanoTime();
 		try {
-            deleteDirectory(output);
+		    if (configuration.isTerminatingAdb()) { //add a new parameter for this one
+                deleteDirectory(output);
+            }
             //noinspection ResultOfMethodCallIgnored
             output.mkdirs();
+		    configuration.getForkReportOutput().mkdirs();
             return forkRunner.run();
 		} catch (Exception e) {
             logger.error("Error while running Fork", e);
@@ -50,7 +59,9 @@ public final class Fork {
 		} finally {
             long duration = millisSinceNanoTime(startOfTestsMs);
             logger.info(formatPeriod(0, duration, "'Total time taken:' H 'hours' m 'minutes' s 'seconds'"));
-            adb().terminate();
+            if (configuration.isTerminatingAdb()) {
+                adb.terminate();
+            }
 		}
 	}
 }

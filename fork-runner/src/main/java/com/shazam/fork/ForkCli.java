@@ -100,6 +100,8 @@ public class ForkCli {
                     .withPoolingStrategy(forkConfiguration.poolingStrategy)
                     .withAutoGrantPermissions(forkConfiguration.autoGrantPermissions)
                     .withExcludedAnnotation(forkConfiguration.excludedAnnotation)
+                    .withIsTerminatingAdb(forkConfiguration.shouldTerminateAdb)
+                    .withOutputForkReport(forkConfiguration.forkOutputDir != null ? cleanFile(forkConfiguration.forkOutputDir) : cleanFile(forkConfiguration.baseOutputDir))
                     .build();
 
             Fork fork = new Fork(configuration);

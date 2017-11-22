@@ -1,14 +1,14 @@
 package com.shazam.fork.system.io;
 
 public enum FileType {
-    TEST ("tests", "xml"),
+    TEST("tests", "xml"),
     RAW_LOG("logcat", "log"),
     JSON_LOG("logcat_json", "json"),
-    SCREENSHOT ("screenshot", "png"),
-    ANIMATION ("animation", "gif"),
-    SCREENRECORD ("screenrecord", "mp4"),
-    COVERAGE ("coverage", "ec"),
-    ;
+    SCREENSHOT("screenshot", "png"),
+    ANIMATION("animation", "gif"),
+    SCREENRECORD("screenrecord", "mp4"),
+    COVERAGE("coverage", "ec"),
+    DUMPSYS("dumpsys", "txt");
 
     private final String directory;
     private final String suffix;

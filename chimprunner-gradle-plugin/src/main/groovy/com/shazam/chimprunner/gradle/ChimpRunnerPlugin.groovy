@@ -36,16 +36,17 @@ class ChimpRunnerPlugin implements Plugin<Project> {
             description = "Runs performance tests on a selected device"
         }
 
-        BaseExtension android = project.android
-        android.testVariants.all { TestVariant variant ->
-            List<ChimpRunnerTask> tasks = createTask(variant, project)
-            tasks.each {
-                it.configure {
-                    description = "Runs performance tests on a selected device for '${variant.name}' variation and generates a file containing reports"
+        project.afterEvaluate {
+            project.android.testVariants.all { TestVariant variant ->
+                List<ChimpRunnerTask> tasks = createTask(variant, project)
+                tasks.each {
+                    it.configure {
+                        description = "Runs performance tests on a selected device for '${variant.name}' variation and generates a file containing reports"
+                    }
                 }
-            }
 
-            chimprunnerTask.dependsOn tasks
+                chimprunnerTask.dependsOn tasks
+            }
         }
     }
 

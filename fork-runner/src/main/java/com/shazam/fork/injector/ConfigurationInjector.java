@@ -30,6 +30,6 @@ public class ConfigurationInjector {
     }
 
     public static File configuredOutput() {
-        return configuration.getOutput();
+        return configuration.getForkReportOutput();
     }
 }

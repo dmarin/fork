@@ -21,15 +21,19 @@ import java.io.*;
 import java.nio.file.Path;
 
 import static com.shazam.fork.CommonDefaults.FORK_SUMMARY_FILENAME_FORMAT;
+import static com.shazam.fork.system.io.FileType.JSON_LOG;
+import static com.shazam.fork.system.io.FileType.SCREENRECORD;
 import static com.shazam.fork.system.io.FileType.TEST;
 import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Paths.get;
 
 public class FileManager {
     private final File output;
+    private final File forkReportOutput;
 
-    public FileManager(File output) {
+    public FileManager(File output, File forkReportOutput) {
         this.output = output;
+        this.forkReportOutput = forkReportOutput;
     }
 
     public File[] getTestFilesForDevice(Pool pool, Device serial) {
@@ -82,7 +86,7 @@ public class FileManager {
 
     public File getFile(FileType fileType, String pool, String safeSerial, TestIdentifier testIdentifier) {
         String filenameForTest = createFilenameForTest(testIdentifier, fileType);
-        Path path = get(output.getAbsolutePath(), fileType.getDirectory(), pool, safeSerial, filenameForTest);
+        Path path = get(isForkReportFile(fileType) ? forkReportOutput.getAbsolutePath() : output.getAbsolutePath(), fileType.getDirectory(), pool, safeSerial, filenameForTest);
         return path.toFile();
     }
 
@@ -91,7 +95,7 @@ public class FileManager {
     }
 
     private Path getDirectory(FileType fileType, Pool pool, Device device) {
-        return get(output.getAbsolutePath(), fileType.getDirectory(), pool.getName(), device.getSafeSerial());
+        return get(isForkReportFile(fileType) ? forkReportOutput.getAbsolutePath() : output.getAbsolutePath(), fileType.getDirectory(), pool.getName(), device.getSafeSerial());
     }
 
     private File createFile(Path directory, String filename) {
@@ -104,5 +108,9 @@ public class FileManager {
 
     private String createFilenameForTest(TestIdentifier testIdentifier, FileType fileType, int sequenceNumber) {
         return String.format("%s-%02d.%s", testIdentifier.toString(), sequenceNumber, fileType.getSuffix());
+    }
+
+    private boolean isForkReportFile(FileType fileType) {
+        return fileType == TEST || fileType == JSON_LOG || fileType == SCREENRECORD;
     }
 }

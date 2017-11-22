@@ -19,7 +19,6 @@ import com.shazam.fork.model.TestCaseEvent;
 import com.shazam.fork.runner.ProgressReporter;
 import com.shazam.fork.system.io.FileManager;
 
-import java.io.File;
 import java.util.List;
 import java.util.Queue;
 
@@ -48,7 +47,7 @@ public class TestRunListenersFactory {
                                                       Queue<TestCaseEvent> testCaseEventQueue) {
         return asList(
                 new ProgressTestRunListener(pool, progressReporter),
-                getForkXmlTestRunListener(fileManager, configuration.getOutput(), pool, device, testCase, progressReporter),
+                getForkXmlTestRunListener(fileManager, pool, device, testCase, progressReporter),
                 new ConsoleLoggingTestRunListener(configuration.getTestPackage(), device.getSerial(),
                         device.getModelName(), progressReporter),
                 new LogCatTestRunListener(gson, fileManager, pool, device),
@@ -60,13 +59,12 @@ public class TestRunListenersFactory {
 
 
     private ForkXmlTestRunListener getForkXmlTestRunListener(FileManager fileManager,
-                                                                   File output,
-                                                                   Pool pool,
-                                                                   Device device,
-                                                                   TestCaseEvent testCase,
-                                                                   ProgressReporter progressReporter) {
+                                                             Pool pool,
+                                                             Device device,
+                                                             TestCaseEvent testCase,
+                                                             ProgressReporter progressReporter) {
         ForkXmlTestRunListener xmlTestRunListener = new ForkXmlTestRunListener(fileManager, pool, device, testCase, progressReporter);
-        xmlTestRunListener.setReportDir(output);
+        xmlTestRunListener.setReportDir(configuration.getForkReportOutput());
         return xmlTestRunListener;
     }
 

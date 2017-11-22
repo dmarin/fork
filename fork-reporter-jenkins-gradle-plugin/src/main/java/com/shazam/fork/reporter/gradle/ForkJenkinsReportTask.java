@@ -29,8 +29,8 @@ public class ForkJenkinsReportTask extends DefaultTask {
     @TaskAction
     public void runForkJenkins() {
         ForkJenkinsReportExtension extension = getProject().getExtensions().getByType(ForkJenkinsReportExtension.class);
-        File forkOutputDir = new File(getProject().getBuildDir(), FORK_OUTPUT_DIR);
-        createDir(forkOutputDir);
+        File forkOutputDir = new File(extension.output, FORK_OUTPUT_DIR);
+        createDir(forkOutputDir, !extension.multimodule);
         File downloadDir = new File(forkOutputDir, DOWNLOAD_DIR);
         createDir(downloadDir);
         File htmlDir = new File(forkOutputDir, REPORT_DIR);
@@ -50,8 +50,15 @@ public class ForkJenkinsReportTask extends DefaultTask {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void createDir(File dir) {
+        createDir(dir, true);
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void createDir(File dir, boolean shouldDeleteFirst) {
         try {
-            deleteDirectory(dir);
+            if (shouldDeleteFirst) {
+                deleteDirectory(dir);
+            }
             dir.mkdirs();
         } catch (IOException e) {
             throw new GradleException("Could not create directory: " + dir.toString(), e);

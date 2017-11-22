@@ -19,7 +19,7 @@ import groovy.lang.Closure;
 public class ForkConfiguration {
 
     /**
-     * Output directory for Fork report files. If empty, the default dir will be used.
+     * Output directory for fork report data.
      */
     public String baseOutputDir;
 
@@ -98,6 +98,17 @@ public class ForkConfiguration {
      * Filter test run to tests without given annotation
      */
     public String excludedAnnotation;
+
+    /**
+     * Terminates adb connection after running the test suite. By default is true, but if in multi module projects,
+     * you see fork is not able to find devices after running the first module, setting this to false should help
+     */
+    public boolean shouldTerminateAdb = true;
+
+    /**
+     * Output directory for Fork report files. If empty, {@link #baseOutputDir} will be used
+     */
+    public String forkOutputDir;
 
     public void poolingStrategy(Closure<?> poolingStrategyClosure) {
         poolingStrategy = new PoolingStrategy();

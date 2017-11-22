@@ -57,6 +57,8 @@ public class Configuration {
     private final PoolingStrategy poolingStrategy;
     private final boolean autoGrantPermissions;
     private final String excludedAnnotation;
+    private final boolean isTerminatingAdb;
+    private final File outputForkReport;
 
     private ApplicationInfo applicationInfo;
 
@@ -83,6 +85,8 @@ public class Configuration {
         autoGrantPermissions = builder.autoGrantPermissions;
         this.excludedAnnotation = builder.excludedAnnotation;
         this.applicationInfo = builder.applicationInfo;
+        isTerminatingAdb = builder.isTerminatingAdb;
+        outputForkReport = builder.outputForkReport;
     }
 
     @Nonnull
@@ -186,6 +190,14 @@ public class Configuration {
         return applicationInfo;
     }
 
+    public boolean isTerminatingAdb() {
+        return isTerminatingAdb;
+    }
+
+    public File getForkReportOutput() {
+        return outputForkReport;
+    }
+
     public static class Builder {
         private File androidSdk;
         private File applicationApk;
@@ -209,6 +221,8 @@ public class Configuration {
         private boolean autoGrantPermissions;
         private String excludedAnnotation;
         private ApplicationInfo applicationInfo;
+        private boolean isTerminatingAdb;
+        private File outputForkReport;
 
         public static Builder configuration() {
             return new Builder();
@@ -304,6 +318,17 @@ public class Configuration {
             return this;
         }
 
+        public Builder withIsTerminatingAdb(boolean shouldTerminateAdb) {
+            isTerminatingAdb = shouldTerminateAdb;
+            return this;
+        }
+
+        public Builder withOutputForkReport(@Nullable File outputForkReport) {
+            this.outputForkReport = outputForkReport;
+            return this;
+        }
+
+
         public Configuration build() {
             checkNotNull(androidSdk, "SDK is required.");
             checkArgument(androidSdk.exists(), "SDK directory does not exist.");
@@ -319,6 +344,10 @@ public class Configuration {
             checkNotNull(instrumentationInfo.getTestRunnerClass(), "Test runner class was not found in test APK");
             testRunnerClass = instrumentationInfo.getTestRunnerClass();
             checkNotNull(output, "Output path is required.");
+
+            if (outputForkReport == null) {
+                outputForkReport = output;
+            }
 
             title = assignValueOrDefaultIfNull(title, Defaults.TITLE);
             subtitle = assignValueOrDefaultIfNull(subtitle, Defaults.SUBTITLE);
