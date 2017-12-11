@@ -59,9 +59,9 @@ public final class Fork {
 		} finally {
             long duration = millisSinceNanoTime(startOfTestsMs);
             logger.info(formatPeriod(0, duration, "'Total time taken:' H 'hours' m 'minutes' s 'seconds'"));
-            if (configuration.isTerminatingAdb()) {
+//            if (configuration.isTerminatingAdb()) {
                 adb.terminate();
-            }
+//            }
 		}
 	}
 }

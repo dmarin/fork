@@ -31,7 +31,7 @@ public class Adb {
         bridge = AndroidDebugBridge.createBridge(adbPath.getAbsolutePath(), false /*forceNewBridge*/);
         long timeOut = 30000; // 30 sec
         int sleepTime = 1000;
-        while (!bridge.hasInitialDeviceList() && timeOut > 0) {
+        while (bridge != null && !bridge.hasInitialDeviceList() && bridge.getDevices().length > 0 && timeOut > 0) {
             sleep(sleepTime);
             timeOut -= sleepTime;
         }
